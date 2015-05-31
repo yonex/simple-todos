@@ -1,0 +1,38 @@
+// https://github.com/mquandalle/meteor-jade/blob/master/examples/simple-todos.jade
+
+head
+    title Todo List
+
+body
+    div.container
+        header
+            h1 Todo List (#{incompleteCount})
+
+            label.hide-completed
+                input(type="checkbox" checked=hideCompleted)
+                | Hide Completed Tasks
+
+            +loginButtons
+
+            if currentUser
+                form.new-task
+                    input(type="text" name="text" placeholder="Type to add new tasks")
+
+        ul
+            each tasks
+                +task
+
+template(name="task")
+    li(class="{{#if checked}}checked{{/if}}" class="{{#if private}}private{{/if}}")
+        button.delete &times;
+        input(type="checkbox" checked=checked class="toggle-checked")
+        if isOwner
+            button.toggle-private
+                if private
+                    | Private
+                else
+                    | Public
+
+        span.text
+            strong= username
+            | - #{text}
